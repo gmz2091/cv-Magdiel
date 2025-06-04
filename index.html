@@ -238,6 +238,126 @@
       font-weight: 600;
     }
 
+    /* Modal de opciones de PDF */
+    .pdf-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .pdf-modal.show {
+      display: flex;
+    }
+
+    .pdf-modal-content {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      color: var(--text-primary);
+    }
+
+    .pdf-modal h3 {
+      margin-top: 0;
+      color: var(--text-heading);
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .quality-option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      margin: 10px 0;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quality-option:hover {
+      border-color: var(--icon-accent);
+      background: var(--bg-primary);
+    }
+
+    .quality-option.selected {
+      border-color: var(--icon-accent);
+      background: var(--bg-primary);
+    }
+
+    .quality-option input[type="radio"] {
+      margin-right: 15px;
+      transform: scale(1.2);
+    }
+
+    .quality-info {
+      flex: 1;
+    }
+
+    .quality-title {
+      font-weight: bold;
+      color: var(--text-heading);
+      margin-bottom: 5px;
+    }
+
+    .quality-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .quality-size {
+      font-size: 12px;
+      color: var(--text-accent);
+      font-weight: bold;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .modal-button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .modal-button.primary {
+      background: var(--icon-accent);
+      color: white;
+    }
+
+    .modal-button.primary:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    .modal-button.secondary {
+      background: var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .modal-button.secondary:hover {
+      background: var(--text-secondary);
+      color: white;
+    }
+
     /* Loading overlay para PDF */
     .pdf-loading {
       position: fixed;
@@ -252,6 +372,7 @@
       z-index: 9999;
       color: white;
       font-size: 18px;
+      flex-direction: column;
     }
 
     .pdf-loading.show {
@@ -265,7 +386,18 @@
       width: 40px;
       height: 40px;
       animation: spin 1s linear infinite;
-      margin-right: 15px;
+      margin-bottom: 15px;
+    }
+
+    .loading-info {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .loading-quality {
+      font-size: 14px;
+      color: #ccc;
+      margin-top: 5px;
     }
 
     @keyframes spin {
@@ -273,57 +405,128 @@
       100% { transform: rotate(360deg); }
     }
     
-    /* Estilos específicos para PDF */
+    /* Estilos específicos para PDF multipágina */
     @media print {
-      .controls {
+      .controls, .pdf-modal {
         display: none !important;
+      }
+      
+      * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
       }
       
       body {
         background: white !important;
         color: black !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       
       .container {
         box-shadow: none !important;
         margin: 0 !important;
         max-width: none !important;
-        flex-direction: row !important;
+        width: 100% !important;
+        min-height: auto !important;
+        display: block !important;
       }
       
-      aside {
+      /* Layout para primera página */
+      .pdf-page-1 {
+        display: flex !important;
+        flex-direction: row !important;
+        min-height: 100vh !important;
+        page-break-after: always !important;
+      }
+      
+      .pdf-page-1 aside {
         width: 30% !important;
         background: #1e293b !important;
         color: white !important;
-        padding: 15px !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
       }
       
-      main {
+      .pdf-page-1 main {
         width: 70% !important;
-        padding: 15px !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
       }
       
+      /* Layout para páginas adicionales */
+      .pdf-page-continuation {
+        width: 100% !important;
+        padding: 15px !important;
+        page-break-before: always !important;
+        min-height: 100vh !important;
+      }
+      
+      /* Control de saltos de página */
+      .job, .project {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-bottom: 12px !important;
+      }
+      
+      .section-header {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      
+      .job h4, .project p strong {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      
+      .job ul, .project ul {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+      }
+      
+      .tech-stack {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+        margin-top: 6px !important;
+        padding-top: 4px !important;
+      }
+      
+      /* Tamaños optimizados para múltiples páginas */
       .tag {
-        font-size: 10px !important;
-        padding: 2px 6px !important;
+        font-size: 9px !important;
+        padding: 1px 4px !important;
+        margin: 1px !important;
+        page-break-inside: avoid !important;
       }
       
       .job h4 {
-        font-size: 14px !important;
+        font-size: 13px !important;
+        margin-bottom: 3px !important;
       }
       
       main h1 {
-        font-size: 24px !important;
+        font-size: 22px !important;
+        margin-bottom: 8px !important;
       }
       
       main h3 {
-        font-size: 16px !important;
-        margin-top: 20px !important;
+        font-size: 15px !important;
+        margin-top: 15px !important;
+        margin-bottom: 8px !important;
+        page-break-after: avoid !important;
       }
       
       aside h2 {
-        font-size: 18px !important;
+        font-size: 16px !important;
+        margin-bottom: 8px !important;
+      }
+      
+      aside h3 {
+        font-size: 13px !important;
+        margin-top: 12px !important;
+        margin-bottom: 6px !important;
       }
       
       .project a {
@@ -331,21 +534,86 @@
       }
       
       ul {
-        margin-top: 5px !important;
+        margin-top: 4px !important;
+        margin-bottom: 8px !important;
       }
       
       li {
-        margin-bottom: 3px !important;
+        margin-bottom: 2px !important;
+        page-break-inside: avoid !important;
       }
       
-      .job {
-        margin-bottom: 15px !important;
+      p {
+        margin-bottom: 6px !important;
+        page-break-inside: avoid !important;
       }
       
-      .tech-stack {
-        margin-top: 8px !important;
-        padding-top: 5px !important;
+      .job p {
+        margin: 4px 0 !important;
+        font-size: 10px !important;
       }
+      
+      /* Evitar huérfanas y viudas */
+      h1, h2, h3, h4, h5, h6 {
+        orphans: 3 !important;
+        widows: 3 !important;
+      }
+      
+      p, li {
+        orphans: 2 !important;
+        widows: 2 !important;
+      }
+      
+      /* Clases de control de página */
+      .page-break-before {
+        page-break-before: always !important;
+      }
+      
+      .page-break-after {
+        page-break-after: always !important;
+      }
+      
+      .avoid-page-break {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      
+      /* Optimización de espacio para sidebar */
+      aside .section {
+        margin: 10px 0 !important;
+      }
+      
+      aside .info p {
+        margin: 3px 0 !important;
+        font-size: 10px !important;
+      }
+      
+      /* Ajustes para contenido largo */
+      .compact-mode .job {
+        margin-bottom: 10px !important;
+      }
+      
+      .compact-mode .job ul {
+        margin-top: 3px !important;
+      }
+      
+      .compact-mode .tech-stack {
+        margin-top: 4px !important;
+      }
+    }
+
+    /* Clases auxiliares para control de página */
+    .avoid-page-break {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
+    .force-page-break {
+      page-break-before: always !important;
+    }
+
+    .section-break {
+      page-break-before: auto !important;
     }
     
     /* Tablet and desktop styles */
@@ -397,10 +665,52 @@
   </style>
 </head>
 <body>
+  <!-- Modal de opciones de PDF -->
+  <div class="pdf-modal" id="pdfModal">
+    <div class="pdf-modal-content">
+      <h3 data-i18n="pdf-options-title">Opciones de Exportación PDF</h3>
+      
+      <div class="quality-option selected" data-quality="high">
+        <input type="radio" name="quality" value="high" checked>
+        <div class="quality-info">
+          <div class="quality-title" data-i18n="high-quality">Alta Calidad</div>
+          <div class="quality-desc" data-i18n="high-quality-desc">Máxima calidad visual, ideal para impresión profesional</div>
+          <div class="quality-size" data-i18n="high-quality-size">~800KB - 1.2MB</div>
+        </div>
+      </div>
+      
+      <div class="quality-option" data-quality="balanced">
+        <input type="radio" name="quality" value="balanced">
+        <div class="quality-info">
+          <div class="quality-title" data-i18n="balanced-quality">Balanceada</div>
+          <div class="quality-desc" data-i18n="balanced-quality-desc">Equilibrio perfecto entre calidad y tamaño de archivo</div>
+          <div class="quality-size" data-i18n="balanced-quality-size">~400KB - 600KB</div>
+        </div>
+      </div>
+      
+      <div class="quality-option" data-quality="compressed">
+        <input type="radio" name="quality" value="compressed">
+        <div class="quality-info">
+          <div class="quality-title" data-i18n="compressed-quality">Alta Compresión</div>
+          <div class="quality-desc" data-i18n="compressed-quality-desc">Archivo más pequeño, ideal para envío por email</div>
+          <div class="quality-size" data-i18n="compressed-quality-size">~200KB - 350KB</div>
+        </div>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="modal-button secondary" id="cancelPdf" data-i18n="cancel">Cancelar</button>
+        <button class="modal-button primary" id="generatePdf" data-i18n="generate-pdf">Generar PDF</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Loading overlay para PDF -->
   <div class="pdf-loading" id="pdfLoading">
     <div class="spinner"></div>
-    <span data-i18n="generating-pdf">Generando PDF...</span>
+    <div class="loading-info">
+      <span data-i18n="generating-pdf">Generando PDF...</span>
+      <div class="loading-quality" id="loadingQuality"></div>
+    </div>
   </div>
 
   <!-- Controles de tema, idioma y PDF -->
@@ -447,14 +757,14 @@
       <h1 data-i18n="name">Magdiel Gómez</h1>
       <p data-i18n="summary">Desarrollador senior con más de 7 años creando soluciones web y móviles de alto impacto, con experiencia en arquitectura limpia, apps offline-first, microservicios IA y desarrollo de productos digitales.</p>
       
-      <h3 data-i18n="work-experience">Experiencia Laboral</h3>
-      <div class="job">
+      <h3 class="section-header" data-i18n="work-experience">Experiencia Laboral</h3>
+      <div class="job avoid-page-break">
         <h4 data-i18n="cloudappi-title">CloudAppi - Desarrollador Frontend</h4>
         <span data-i18n="cloudappi-period">Marzo 2022 – Junio 2023</span>
         <p data-i18n="cloudappi-desc">Participé en el desarrollo y mejora de un sistema de gestión de turnos, implementando nuevas funcionalidades y optimizando la experiencia de usuario.</p>
         <ul>
           <li data-i18n="cloudappi-1"><strong>Frontend Web:</strong> Desarrollo con React y AngularJS, implementación de interfaces responsivas y optimización de rendimiento.</li >
-          <li data-i18n="cloudappi-2"><strong>Backend:</strong> Integración con APIs desarrolladas en NestJS, manejo de estados complejos y autenticación.</li>
+          <li data-i18n="cloudappi-2"><strong>Backend:</strong> Integración con APIs desarrolladas en NestJS, manejo de estados complejos y autenticación.</li >
           <li data-i18n="cloudappi-3"><strong>Aplicación Móvil:</strong> Desarrollo de app híbrida con Ionic y Angular para búsqueda de establecimientos y agendamiento de turnos.</li >
           <li data-i18n="cloudappi-4"><strong>UX/UI:</strong> Mejora continua de la experiencia de usuario basada en feedback y métricas de uso.</li>
         </ul>
@@ -463,7 +773,7 @@
         </div>
       </div>
 
-      <div class="job">
+      <div class="job avoid-page-break">
         <h4 data-i18n="loro-title">Loro (E-commerce Colombia) - Desarrollador Frontend</h4>
         <span data-i18n="loro-period">Agosto 2021 – Diciembre 2021</span>
         <p data-i18n="loro-desc">Colaboré en la mejora de funcionalidades existentes y la optimización de la experiencia mobile-first en una plataforma e-commerce ya en funcionamiento.</p>
@@ -478,7 +788,7 @@
         </div>
       </div>
 
-      <div class="job">
+      <div class="job avoid-page-break">
         <h4 data-i18n="freelance-title">Freelance - Desarrollador Full Stack</h4>
         <span data-i18n="freelance-period">Junio 2018 – Actualidad</span>
         <p data-i18n="freelance-desc">Desarrollo web y móvil a medida para diversos clientes, abarcando desde sitios corporativos hasta soluciones con dashboards y lógica de negocio compleja.</p>
@@ -494,8 +804,8 @@
         </div>
       </div>
 
-      <h3 data-i18n="featured-projects">Proyectos Destacados</h3>
-      <div class="project">
+      <h3 class="section-header section-break" data-i18n="featured-projects">Proyectos Destacados</h3>
+      <div class="project avoid-page-break">
         <p><strong data-i18n="educonnect-title">EduConnect Mobile - Aplicación Educativa</strong> – <a href="#" data-i18n="app-store">Ver en App Store</a> | <a href="#" data-i18n="google-play">Ver en Google Play</a></p>
         <ul>
           <li data-i18n="educonnect-1"><strong>Aplicación Nativa:</strong> Desarrollo completo de aplicación móvil para institución educativa con más de 2,000 usuarios activos.</li >
@@ -509,7 +819,7 @@
         </div>
       </div>
 
-      <div class="project">
+      <div class="project avoid-page-break">
         <p><strong data-i18n="eduadmin-title">EduAdmin Dashboard - Panel de Administración Educativa</strong> – <a href="#" data-i18n="view-demo">Ver demo</a></p>
         <ul>
           <li data-i18n="eduadmin-1"><strong>Sistema Integral:</strong> Dashboard web completo para gestión administrativa del colegio con módulos de estudiantes, docentes, calificaciones y reportes.</li >
@@ -523,7 +833,7 @@
         </div>
       </div>
 
-      <div class="project">
+      <div class="project avoid-page-break">
         <p><strong data-i18n="clientai-title">Client Reminder AI - Sistema de Gestión Inteligente</strong> – <a href="#" data-i18n="view-github">Ver en GitHub</a></p>
         <ul>
           <li data-i18n="clientai-1"><strong>IA Predictiva:</strong> Implementación de algoritmos de machine learning para predicción de asistencia de clientes con 85% de precisión.</li >
@@ -536,7 +846,7 @@
         </div>
       </div>
       
-      <h3 data-i18n="education">Educación</h3>
+      <h3 class="section-header" data-i18n="education">Educación</h3>
       <p data-i18n="education-desc">Autodidacta - Cursos avanzados en Clean Architecture, AI, React Native, Backend escalable</p>
     </main>
   </div>
@@ -601,7 +911,19 @@
         "clientai-4": "<strong>Integración:</strong> Conexión con calendarios externos (Google Calendar, Outlook) y sistemas de CRM existentes.",
         "education": "Educación",
         "education-desc": "Autodidacta - Cursos avanzados en Clean Architecture, AI, React Native, Backend escalable",
-        "generating-pdf": "Generando PDF..."
+        "generating-pdf": "Generando PDF...",
+        "pdf-options-title": "Opciones de Exportación PDF",
+        "high-quality": "Alta Calidad",
+        "high-quality-desc": "Máxima calidad visual, ideal para impresión profesional",
+        "high-quality-size": "~800KB - 1.2MB",
+        "balanced-quality": "Balanceada",
+        "balanced-quality-desc": "Equilibrio perfecto entre calidad y tamaño de archivo",
+        "balanced-quality-size": "~400KB - 600KB",
+        "compressed-quality": "Alta Compresión",
+        "compressed-quality-desc": "Archivo más pequeño, ideal para envío por email",
+        "compressed-quality-size": "~200KB - 350KB",
+        "cancel": "Cancelar",
+        "generate-pdf": "Generar PDF"
       },
       en: {
         "name": "Magdiel Gómez",
@@ -660,48 +982,296 @@
         "clientai-4": "<strong>Integration:</strong> Connection with external calendars (Google Calendar, Outlook) and existing CRM systems.",
         "education": "Education",
         "education-desc": "Self-taught - Advanced courses in Clean Architecture, AI, React Native, Scalable Backend",
-        "generating-pdf": "Generating PDF..."
+        "generating-pdf": "Generating PDF...",
+        "pdf-options-title": "PDF Export Options",
+        "high-quality": "High Quality",
+        "high-quality-desc": "Maximum visual quality, ideal for professional printing",
+        "high-quality-size": "~800KB - 1.2MB",
+        "balanced-quality": "Balanced",
+        "balanced-quality-desc": "Perfect balance between quality and file size",
+        "balanced-quality-size": "~400KB - 600KB",
+        "compressed-quality": "High Compression",
+        "compressed-quality-desc": "Smaller file, ideal for email sending",
+        "compressed-quality-size": "~200KB - 350KB",
+        "cancel": "Cancel",
+        "generate-pdf": "Generate PDF"
       }
     };
 
     let currentLang = 'es';
+    let selectedQuality = 'high';
 
-    // Función para generar PDF
+    // Configuraciones de calidad
+    const qualitySettings = {
+      high: {
+        scale: 2.0,
+        quality: 1.0,
+        compress: false,
+        precision: 16
+      },
+      balanced: {
+        scale: 1.5,
+        quality: 0.85,
+        compress: true,
+        precision: 8
+      },
+      compressed: {
+        scale: 1.2,
+        quality: 0.7,
+        compress: true,
+        precision: 4
+      }
+    };
+
+    // Función para mostrar modal de opciones PDF
+    function showPdfModal() {
+      const modal = document.getElementById('pdfModal');
+      modal.classList.add('show');
+    }
+
+    // Función para ocultar modal de opciones PDF
+    function hidePdfModal() {
+      const modal = document.getElementById('pdfModal');
+      modal.classList.remove('show');
+    }
+
+    // Función para manejar selección de calidad
+    function handleQualitySelection() {
+      const qualityOptions = document.querySelectorAll('.quality-option');
+      const radioButtons = document.querySelectorAll('input[name="quality"]');
+      
+      qualityOptions.forEach((option, index) => {
+        option.addEventListener('click', () => {
+          // Remover selección anterior
+          qualityOptions.forEach(opt => opt.classList.remove('selected'));
+          radioButtons.forEach(radio => radio.checked = false);
+          
+          // Seleccionar nueva opción
+          option.classList.add('selected');
+          radioButtons[index].checked = true;
+          selectedQuality = radioButtons[index].value;
+        });
+      });
+      
+      radioButtons.forEach((radio, index) => {
+        radio.addEventListener('change', () => {
+          if (radio.checked) {
+            qualityOptions.forEach(opt => opt.classList.remove('selected'));
+            qualityOptions[index].classList.add('selected');
+            selectedQuality = radio.value;
+          }
+        });
+      });
+    }
+
+    // Función para detectar si el contenido necesita múltiples páginas
+    function estimateContentHeight(element) {
+      const clone = element.cloneNode(true);
+      clone.style.position = 'absolute';
+      clone.style.visibility = 'hidden';
+      clone.style.width = '210mm';
+      clone.style.fontSize = '11px';
+      clone.style.lineHeight = '1.3';
+      document.body.appendChild(clone);
+      
+      const height = clone.offsetHeight;
+      document.body.removeChild(clone);
+      
+      const pageHeight = 1050;
+      return Math.ceil(height / pageHeight);
+    }
+
+    // Función para optimizar contenido según calidad seleccionada
+    function optimizeContentForQuality(clonedContent, quality) {
+      const settings = qualitySettings[quality];
+      
+      if (quality === 'compressed') {
+        // Optimizaciones adicionales para alta compresión
+        clonedContent.classList.add('compact-mode');
+        
+        // Reducir espaciado
+        const jobs = clonedContent.querySelectorAll('.job');
+        jobs.forEach(job => {
+          job.style.marginBottom = '8px';
+        });
+        
+        // Reducir tamaño de tags
+        const tags = clonedContent.querySelectorAll('.tag');
+        tags.forEach(tag => {
+          tag.style.fontSize = '8px';
+          tag.style.padding = '1px 3px';
+          tag.style.margin = '1px';
+        });
+        
+        // Reducir tamaños de fuente
+        clonedContent.style.fontSize = '10px';
+        
+        const h1 = clonedContent.querySelector('h1');
+        const h3s = clonedContent.querySelectorAll('h3');
+        const h4s = clonedContent.querySelectorAll('h4');
+        
+        if (h1) h1.style.fontSize = '18px';
+        h3s.forEach(h3 => h3.style.fontSize = '13px');
+        h4s.forEach(h4 => h4.style.fontSize = '11px');
+      }
+      
+      return settings;
+    }
+
+    // Función para optimizar contenido para múltiples páginas
+    function optimizeForMultiplePages(clonedContent) {
+      const estimatedPages = estimateContentHeight(clonedContent);
+      
+      if (estimatedPages > 1) {
+        clonedContent.classList.add('compact-mode');
+        
+        const main = clonedContent.querySelector('main');
+        const projects = main.querySelectorAll('.project');
+        
+        if (projects.length > 2) {
+          const projectsSection = main.querySelector('[data-i18n="featured-projects"]');
+          if (projectsSection) {
+            projectsSection.classList.add('page-break-before');
+          }
+        }
+        
+        const jobs = clonedContent.querySelectorAll('.job');
+        jobs.forEach((job, index) => {
+          if (index > 1) {
+            job.style.marginBottom = '8px';
+          }
+        });
+      }
+      
+      return estimatedPages;
+    }
+
+    // Función para generar PDF con compresión inteligente
     async function generatePDF() {
       const loadingOverlay = document.getElementById('pdfLoading');
+      const loadingQuality = document.getElementById('loadingQuality');
       const cvContent = document.getElementById('cv-content');
       
       try {
-        // Mostrar loading
+        // Mostrar loading con información de calidad
         loadingOverlay.classList.add('show');
+        const qualityNames = {
+          high: currentLang === 'es' ? 'Alta Calidad' : 'High Quality',
+          balanced: currentLang === 'es' ? 'Balanceada' : 'Balanced',
+          compressed: currentLang === 'es' ? 'Alta Compresión' : 'High Compression'
+        };
+        loadingQuality.textContent = `${currentLang === 'es' ? 'Calidad:' : 'Quality:'} ${qualityNames[selectedQuality]}`;
         
-        // Configuración del PDF
+        // Crear un clon del contenido
+        const clonedContent = cvContent.cloneNode(true);
+        
+        // Aplicar estilos base
+        clonedContent.style.width = '210mm';
+        clonedContent.style.minHeight = '297mm';
+        clonedContent.style.padding = '8mm';
+        clonedContent.style.boxSizing = 'border-box';
+        clonedContent.style.backgroundColor = 'white';
+        clonedContent.style.color = 'black';
+        clonedContent.style.fontSize = '11px';
+        clonedContent.style.lineHeight = '1.3';
+        clonedContent.style.display = 'flex';
+        clonedContent.style.flexDirection = 'row';
+        
+        // Configurar sidebar y main
+        const aside = clonedContent.querySelector('aside');
+        const main = clonedContent.querySelector('main');
+        
+        if (aside && main) {
+          aside.style.width = '30%';
+          aside.style.backgroundColor = '#1e293b';
+          aside.style.color = 'white';
+          aside.style.padding = '12px';
+          aside.style.boxSizing = 'border-box';
+          
+          main.style.width = '70%';
+          main.style.padding = '12px';
+          main.style.boxSizing = 'border-box';
+        }
+        
+        // Optimizar para múltiples páginas
+        const estimatedPages = optimizeForMultiplePages(clonedContent);
+        
+        // Optimizar según calidad seleccionada
+        const qualityConfig = optimizeContentForQuality(clonedContent, selectedQuality);
+        
+        // Aplicar estilos de prevención de cortes
+        const jobs = clonedContent.querySelectorAll('.job');
+        const projects = clonedContent.querySelectorAll('.project');
+        
+        jobs.forEach(job => {
+          job.style.pageBreakInside = 'avoid';
+          job.style.breakInside = 'avoid';
+        });
+        
+        projects.forEach(project => {
+          project.style.pageBreakInside = 'avoid';
+          project.style.breakInside = 'avoid';
+        });
+        
+        // Insertar temporalmente el clon en el DOM
+        clonedContent.style.position = 'absolute';
+        clonedContent.style.left = '-9999px';
+        clonedContent.style.top = '0';
+        document.body.appendChild(clonedContent);
+        
+        // Configuración optimizada del PDF según calidad
         const opt = {
-          margin: [0.5, 0.5, 0.5, 0.5],
-          filename: `CV_Magdiel_Gomez_${currentLang.toUpperCase()}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
+          margin: [3, 3, 3, 3],
+          filename: `CV_Magdiel_Gomez_${currentLang.toUpperCase()}_${selectedQuality}.pdf`,
+          image: { 
+            type: 'jpeg', 
+            quality: qualityConfig.quality
+          },
           html2canvas: { 
-            scale: 2,
+            scale: qualityConfig.scale,
             useCORS: true,
             letterRendering: true,
-            allowTaint: false
+            allowTaint: false,
+            width: 794,
+            height: null,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 794,
+            windowHeight: 1123,
+            imageTimeout: 15000,
+            removeContainer: true
           },
           jsPDF: { 
-            unit: 'in', 
+            unit: 'mm', 
             format: 'a4', 
-            orientation: 'portrait' 
+            orientation: 'portrait',
+            compress: qualityConfig.compress,
+            precision: qualityConfig.precision,
+            userUnit: 1.0
+          },
+          pagebreak: { 
+            mode: ['avoid-all', 'css'],
+            before: ['.page-break-before', '.force-page-break'],
+            after: ['.page-break-after'],
+            avoid: ['.job', '.project', '.avoid-page-break', '.section']
           }
         };
 
         // Generar PDF
-        await html2pdf().set(opt).from(cvContent).save();
+        await html2pdf().set(opt).from(clonedContent).save();
+        
+        // Remover el clon del DOM
+        document.body.removeChild(clonedContent);
+        
+        console.log(`PDF generado exitosamente. Páginas estimadas: ${estimatedPages}, Calidad: ${selectedQuality}`);
         
       } catch (error) {
         console.error('Error generating PDF:', error);
         alert(currentLang === 'es' ? 'Error al generar el PDF' : 'Error generating PDF');
       } finally {
-        // Ocultar loading
+        // Ocultar loading y modal
         loadingOverlay.classList.remove('show');
+        hidePdfModal();
       }
     }
 
@@ -717,16 +1287,10 @@
       const langText = document.getElementById('langText');
       const html = document.documentElement;
       
-      // Actualizar el botón de idioma
       langText.textContent = currentLang === 'es' ? 'EN' : 'ES';
-      
-      // Actualizar el atributo lang del HTML
       html.setAttribute('lang', currentLang);
-      
-      // Actualizar el título de la página
       document.title = currentLang === 'es' ? 'CV - Magdiel Gómez' : 'Resume - Magdiel Gómez';
       
-      // Actualizar todos los elementos con data-i18n
       const elements = document.querySelectorAll('[data-i18n]');
       elements.forEach(element => {
         const key = element.getAttribute('data-i18n');
@@ -782,12 +1346,22 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadTheme();
       loadLanguage();
+      handleQualitySelection();
     });
 
     // Agregar event listeners
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('langToggle').addEventListener('click', toggleLanguage);
-    document.getElementById('pdfButton').addEventListener('click', generatePDF);
+    document.getElementById('pdfButton').addEventListener('click', showPdfModal);
+    document.getElementById('cancelPdf').addEventListener('click', hidePdfModal);
+    document.getElementById('generatePdf').addEventListener('click', generatePDF);
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('pdfModal').addEventListener('click', (e) => {
+      if (e.target.id === 'pdfModal') {
+        hidePdfModal();
+      }
+    });
 
     // Escuchar cambios en la preferencia del sistema
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
