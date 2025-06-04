@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV - Magdiel Gómez</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      /* Colores modo claro */
+      --bg-primary: #f7f9fc;
+      --bg-secondary: #fff;
+      --bg-sidebar: #1e293b;
+      --text-primary: #333;
+      --text-secondary: #475569;
+      --text-sidebar: #fff;
+      --text-accent: #1e40af;
+      --text-heading: #1e293b;
+      --border-color: #e2e8f0;
+      --tag-bg: #e2e8f0;
+      --tag-text: #1e293b;
+      --icon-accent: #38bdf8;
+      --shadow: rgba(0,0,0,0.1);
+    }
+
+    [data-theme="dark"] {
+      /* Colores modo oscuro */
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-sidebar: #334155;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-sidebar: #f1f5f9;
+      --text-accent: #60a5fa;
+      --text-heading: #f1f5f9;
+      --border-color: #475569;
+      --tag-bg: #475569;
+      --tag-text: #e2e8f0;
+      --icon-accent: #38bdf8;
+      --shadow: rgba(0,0,0,0.3);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.5;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .theme-toggle, .lang-toggle, .pdf-button {
+      background: var(--bg-sidebar);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px var(--shadow);
+      transition: all 0.3s ease;
+    }
+    
+    .theme-toggle:hover, .lang-toggle:hover, .pdf-button:hover {
+      transform: scale(1.1);
+    }
+    
+    .theme-toggle i, .lang-toggle i, .pdf-button i {
+      font-size: 20px;
+      color: var(--icon-accent);
+      transition: transform 0.3s ease;
+    }
+    
+    .lang-toggle span {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--icon-accent);
+    }
+    
+    .theme-toggle:hover i {
+      transform: rotate(180deg);
+    }
+    
+    .lang-toggle:hover, .pdf-button:hover {
+      background: var(--icon-accent);
+    }
+    
+    .lang-toggle:hover span, .pdf-button:hover i {
+      color: var(--bg-sidebar);
+    }
+    
+    .pdf-button:hover i {
+      transform: translateY(-2px);
+    }
+    
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      background: var(--bg-secondary);
+      box-shadow: 0 0 10px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    aside {
+      width: 100%;
+      background: var(--bg-sidebar);
+      color: var(--text-sidebar);
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
+    
+    aside h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+    
+    aside h3 {
+      color: var(--text-sidebar);
+      transition: color 0.3s ease;
+    }
+    
+    aside .info i {
+      margin-right: 10px;
+      color: var(--icon-accent);
+      width: 16px;
+    }
+    
+    aside .section {
+      margin: 20px 0;
+    }
+    
+    main {
+      width: 100%;
+      padding: 20px;
+    }
+    
+    main h1 {
+      margin: 0;
+      font-size: 26px;
+      color: var(--text-heading);
+      transition: color 0.3s ease;
+    }
+    
+    main h3 {
+      margin-top: 30px;
+      color: var(--text-heading);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 5px;
+      font-size: 20px;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .job {
+      margin-bottom: 20px;
+    }
+    
+    .job h4 {
+      margin: 0;
+      font-size: 17px;
+      color: var(--text-accent);
+      transition: color 0.3s ease;
+    }
+    
+    .job span {
+      display: block;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      transition: color 0.3s ease;
+    }
+    
+    ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    
+    li {
+      margin-bottom: 5px;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
+    }
+    
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 5px;
+      padding: 4px 8px;
+      margin: 3px;
+      font-size: 12px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .project a {
+      color: var(--text-accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .project a:hover {
+      text-decoration: underline;
+    }
+    
+    .tech-stack {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .job p {
+      margin: 8px 0;
+      color: var(--text-secondary);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .job ul li strong {
+      color: var(--text-accent);
+      font-weight: 600;
+    }
+
+    /* Loading overlay para PDF */
+    .pdf-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: white;
+      font-size: 18px;
+    }
+
+    .pdf-loading.show {
+      display: flex;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--icon-accent);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-right: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Estilos específicos para PDF */
+    @media print {
+      .controls {
+        display: none !important;
+      }
+      
+      body {
+        background: white !important;
+        color: black !important;
+        font-size: 12px !important;
+      }
+      
+      .container {
+        box-shadow: none !important;
+        margin: 0 !important;
+        max-width: none !important;
+        flex-direction: row !important;
+      }
+      
+      aside {
+        width: 30% !important;
+        background: #1e293b !important;
+        color: white !important;
+        padding: 15px !important;
+      }
+      
+      main {
+        width: 70% !important;
+        padding: 15px !important;
+      }
+      
+      .tag {
+        font-size: 10px !important;
+        padding: 2px 6px !important;
+      }
+      
+      .job h4 {
+        font-size: 14px !important;
+      }
+      
+      main h1 {
+        font-size: 24px !important;
+      }
+      
+      main h3 {
+        font-size: 16px !important;
+        margin-top: 20px !important;
+      }
+      
+      aside h2 {
+        font-size: 18px !important;
+      }
+      
+      .project a {
+        color: #1e40af !important;
+      }
+      
+      ul {
+        margin-top: 5px !important;
+      }
+      
+      li {
+        margin-bottom: 3px !important;
+      }
+      
+      .job {
+        margin-bottom: 15px !important;
+      }
+      
+      .tech-stack {
+        margin-top: 8px !important;
+        padding-top: 5px !important;
+      }
+    }
+    
+    /* Tablet and desktop styles */
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+        max-width: 1000px;
+        margin: 20px auto;
+      }
+      
+      aside {
+        width: 30%;
+        padding: 30px;
+      }
+      
+      main {
+        width: 70%;
+        padding: 30px;
+      }
+      
+      main h1 {
+        font-size: 32px;
+      }
+      
+      aside h2 {
+        font-size: 24px;
+      }
+      
+      .job h4 {
+        font-size: 18px;
+      }
+      
+      .tag {
+        font-size: 13px;
+      }
+    }
+    
+    /* Large desktop styles */
+    @media (min-width: 1200px) {
+      .container {
+        margin: 40px auto;
+      }
+    }
+
+    /* Animación para el cambio de tema */
+    * {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading overlay para PDF -->
+  <div class="pdf-loading" id="pdfLoading">
+    <div class="spinner"></div>
+    <span data-i18n="generating-pdf">Generando PDF...</span>
+  </div>
+
+  <!-- Controles de tema, idioma y PDF -->
+  <div class="controls">
+    <button class="pdf-button" id="pdfButton" aria-label="Exportar a PDF">
+      <i class="fas fa-file-pdf"></i>
+    </button>
+    <button class="lang-toggle" id="langToggle" aria-label="Cambiar idioma">
+      <span id="langText">EN</span>
+    </button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+      <i class="fas fa-sun" id="themeIcon"></i>
+    </button>
+  </div>
+
+  <div class="container" id="cv-content">
+    <aside>
+      <h2 data-i18n="name">Magdiel Gómez</h2>
+      <p data-i18n="description">Desarrollador Fullstack con enfoque en apps móviles, edtech e inteligencia artificial.</p>
+      <div class="section info">
+        <p><i class="fas fa-envelope"></i> mgomez2091@gmail.com</p>
+        <p><i class="fab fa-github"></i> github.com/gmz2091</p>
+        <p><i class="fab fa-linkedin"></i> linkedin.com/in/magdielgomez</p>
+        <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="location">Guaymas, Sonora, México</span></p>
+      </div>
+      <div class="section">
+        <h3 data-i18n="skills">Habilidades</h3>
+        <p><strong>Frontend</strong></p>
+        <div class="tag">React</div><div class="tag">React Native</div><div class="tag">Redux</div><div class="tag">Tailwind</div>
+        <p><strong>Backend</strong></p>
+        <div class="tag">NestJS</div><div class="tag">FastAPI</div><div class="tag">MongoDB</div><div class="tag">PostgreSQL</div>
+        <p><strong>AI / DevOps</strong></p>
+        <div class="tag">TensorFlow Lite</div><div class="tag">ONNX</div><div class="tag">Docker</div><div class="tag">OpenAI API</div>
+        <p><strong data-i18n="mobile-native">Mobile Nativo</strong></p>
+        <div class="tag">Swift</div><div class="tag">SwiftUI</div><div class="tag">Kotlin</div><div class="tag">Flutter</div>
+      </div>
+      <div class="section">
+        <h3 data-i18n="languages">Idiomas</h3>
+        <p data-i18n="spanish">Español (nativo)</p>
+        <p data-i18n="english">Inglés técnico (lectura)</p>
+      </div>
+    </aside>
+    <main>
+      <h1 data-i18n="name">Magdiel Gómez</h1>
+      <p data-i18n="summary">Desarrollador senior con más de 7 años creando soluciones web y móviles de alto impacto, con experiencia en arquitectura limpia, apps offline-first, microservicios IA y desarrollo de productos digitales.</p>
+      
+      <h3 data-i18n="work-experience">Experiencia Laboral</h3>
+      <div class="job">
+        <h4 data-i18n="cloudappi-title">CloudAppi - Desarrollador Frontend</h4>
+        <span data-i18n="cloudappi-period">Marzo 2022 – Junio 2023</span>
+        <p data-i18n="cloudappi-desc">Participé en el desarrollo y mejora de un sistema de gestión de turnos, implementando nuevas funcionalidades y optimizando la experiencia de usuario.</p>
+        <ul>
+          <li data-i18n="cloudappi-1"><strong>Frontend Web:</strong> Desarrollo con React y AngularJS, implementación de interfaces responsivas y optimización de rendimiento.</li >
+          <li data-i18n="cloudappi-2"><strong>Backend:</strong> Integración con APIs desarrolladas en NestJS, manejo de estados complejos y autenticación.</li>
+          <li data-i18n="cloudappi-3"><strong>Aplicación Móvil:</strong> Desarrollo de app híbrida con Ionic y Angular para búsqueda de establecimientos y agendamiento de turnos.</li >
+          <li data-i18n="cloudappi-4"><strong>UX/UI:</strong> Mejora continua de la experiencia de usuario basada en feedback y métricas de uso.</li>
+        </ul>
+        <div class="tech-stack">
+          <div class="tag">React</div><div class="tag">AngularJS</div><div class="tag">NestJS</div><div class="tag">Ionic</div><div class="tag">Angular</div>
+        </div>
+      </div>
+
+      <div class="job">
+        <h4 data-i18n="loro-title">Loro (E-commerce Colombia) - Desarrollador Frontend</h4>
+        <span data-i18n="loro-period">Agosto 2021 – Diciembre 2021</span>
+        <p data-i18n="loro-desc">Colaboré en la mejora de funcionalidades existentes y la optimización de la experiencia mobile-first en una plataforma e-commerce ya en funcionamiento.</p>
+        <ul>
+          <li data-i18n="loro-1"><strong>Optimización Mobile:</strong> Implementación de diseño responsive y mejora de performance en dispositivos móviles.</li >
+          <li data-i18n="loro-2"><strong>Funcionalidades E-commerce:</strong> Desarrollo de features para carrito de compras, checkout y gestión de productos.</li >
+          <li data-i18n="loro-3"><strong>Performance:</strong> Optimización de tiempos de carga y experiencia de usuario en plataforma de alto tráfico.</li >
+          <li data-i18n="loro-4"><strong>Colaboración:</strong> Trabajo en equipo ágil con metodologías Scrum y revisiones de código.</li>
+        </ul>
+        <div class="tech-stack">
+          <div class="tag">JavaScript</div><div class="tag">CSS3</div><div class="tag">HTML5</div><div class="tag">Mobile-First</div>
+        </div>
+      </div>
+
+      <div class="job">
+        <h4 data-i18n="freelance-title">Freelance - Desarrollador Full Stack</h4>
+        <span data-i18n="freelance-period">Junio 2018 – Actualidad</span>
+        <p data-i18n="freelance-desc">Desarrollo web y móvil a medida para diversos clientes, abarcando desde sitios corporativos hasta soluciones con dashboards y lógica de negocio compleja.</p>
+        <ul>
+          <li data-i18n="freelance-1"><strong>Desarrollo Full Stack:</strong> Creación de aplicaciones completas desde el frontend hasta la base de datos.</li >
+          <li data-i18n="freelance-2"><strong>Sitios Corporativos:</strong> Desarrollo de páginas web profesionales con Next.js y optimización SEO.</li >
+          <li data-i18n="freelance-3"><strong>Dashboards Complejos:</strong> Implementación de paneles de control con visualización de datos y reportes.</li >
+          <li data-i18n="freelance-4"><strong>Adaptabilidad:</strong> Trabajo con diferentes tecnologías según necesidades del cliente y equipo.</li >
+          <li data-i18n="freelance-5"><strong>Gestión de Proyectos:</strong> Manejo directo con clientes, estimación de tiempos y entrega de proyectos.</li >
+        </ul>
+        <div class="tech-stack">
+          <div class="tag">React</div><div class="tag">Next.js</div><div class="tag">Angular</div><div class="tag">NestJS</div><div class="tag">Ionic</div><div class="tag">Node.js</div><div class="tag">MongoDB</div><div class="tag">PostgreSQL</div>
+        </div>
+      </div>
+
+      <h3 data-i18n="featured-projects">Proyectos Destacados</h3>
+      <div class="project">
+        <p><strong data-i18n="educonnect-title">EduConnect Mobile - Aplicación Educativa</strong> – <a href="#" data-i18n="app-store">Ver en App Store</a> | <a href="#" data-i18n="google-play">Ver en Google Play</a></p>
+        <ul>
+          <li data-i18n="educonnect-1"><strong>Aplicación Nativa:</strong> Desarrollo completo de aplicación móvil para institución educativa con más de 2,000 usuarios activos.</li >
+          <li data-i18n="educonnect-2"><strong>Funcionalidades Core:</strong> Sistema de calificaciones en tiempo real, comunicación padres-docentes, calendario académico y notificaciones push.</li >
+          <li data-i18n="educonnect-3"><strong>Arquitectura:</strong> Implementación con React Native, Redux Toolkit para gestión de estado y React Query para sincronización de datos.</li >
+          <li data-i18n="educonnect-4"><strong>Offline-First:</strong> Funcionalidad completa sin conexión con sincronización automática al recuperar conectividad.</li >
+          <li data-i18n="educonnect-5"><strong>Publicación:</strong> Gestión completa del proceso de publicación en App Store y Google Play Store, incluyendo certificados y optimización ASO.</li >
+        </ul>
+        <div class="tech-stack">
+          <div class="tag">React Native</div><div class="tag">Redux Toolkit</div><div class="tag">React Query</div><div class="tag">Firebase</div><div class="tag">Push Notifications</div>
+        </div>
+      </div>
+
+      <div class="project">
+        <p><strong data-i18n="eduadmin-title">EduAdmin Dashboard - Panel de Administración Educativa</strong> – <a href="#" data-i18n="view-demo">Ver demo</a></p>
+        <ul>
+          <li data-i18n="eduadmin-1"><strong>Sistema Integral:</strong> Dashboard web completo para gestión administrativa del colegio con módulos de estudiantes, docentes, calificaciones y reportes.</li >
+          <li data-i18n="eduadmin-2"><strong>Analytics Avanzados:</strong> Implementación de gráficos interactivos con Chart.js para análisis de rendimiento académico y métricas institucionales.</li >
+          <li data-i18n="eduadmin-3"><strong>Gestión de Usuarios:</strong> Sistema de roles y permisos granulares para directivos, coordinadores, docentes y personal administrativo.</li >
+          <li data-i18n="eduadmin-4"><strong>Reportes Automatizados:</strong> Generación de reportes en PDF con datos académicos, asistencia y comunicados para padres de familia.</li >
+          <li data-i18n="eduadmin-5"><strong>Integración:</strong> Sincronización bidireccional con la aplicación móvil mediante APIs REST desarrolladas en NestJS.</li >
+        </ul>
+        <div class="tech-stack">
+          <div class="tag">React</div><div class="tag">Next.js</div><div class="tag">Chart.js</div><div class="tag">NestJS</div><div class="tag">PostgreSQL</div><div class="tag">JWT Auth</div>
+        </div>
+      </div>
+
+      <div class="project">
+        <p><strong data-i18n="clientai-title">Client Reminder AI - Sistema de Gestión Inteligente</strong> – <a href="#" data-i18n="view-github">Ver en GitHub</a></p>
+        <ul>
+          <li data-i18n="clientai-1"><strong>IA Predictiva:</strong> Implementación de algoritmos de machine learning para predicción de asistencia de clientes con 85% de precisión.</li >
+          <li data-i18n="clientai-2"><strong>Automatización:</strong> Sistema de recordatorios automáticos vía WhatsApp Business API con personalización basada en comportamiento del cliente.</li >
+          <li data-i18n="clientai-3"><strong>Dashboard Analytics:</strong> Panel de control con métricas en tiempo real, análisis de tendencias y reportes de efectividad.</li >
+          <li data-i18n="clientai-4"><strong>Integración:</strong> Conexión con calendarios externos (Google Calendar, Outlook) y sistemas de CRM existentes.</li >
+        </ul>
+        <div class="tech-stack">
+          <div class="tag">FastAPI</div><div class="tag">TensorFlow</div><div class="tag">WhatsApp API</div><div class="tag">React</div><div class="tag">MongoDB</div>
+        </div>
+      </div>
+      
+      <h3 data-i18n="education">Educación</h3>
+      <p data-i18n="education-desc">Autodidacta - Cursos avanzados en Clean Architecture, AI, React Native, Backend escalable</p>
+    </main>
+  </div>
+
+  <script>
+    // Traducciones
+    const translations = {
+      es: {
+        "name": "Magdiel Gómez",
+        "description": "Desarrollador Fullstack con enfoque en apps móviles, edtech e inteligencia artificial.",
+        "location": "Guaymas, Sonora, México",
+        "skills": "Habilidades",
+        "mobile-native": "Mobile Nativo",
+        "languages": "Idiomas",
+        "spanish": "Español (nativo)",
+        "english": "Inglés técnico (lectura)",
+        "summary": "Desarrollador senior con más de 7 años creando soluciones web y móviles de alto impacto, con experiencia en arquitectura limpia, apps offline-first, microservicios IA y desarrollo de productos digitales.",
+        "work-experience": "Experiencia Laboral",
+        "cloudappi-title": "CloudAppi - Desarrollador Frontend",
+        "cloudappi-period": "Marzo 2022 – Junio 2023",
+        "cloudappi-desc": "Participé en el desarrollo y mejora de un sistema de gestión de turnos, implementando nuevas funcionalidades y optimizando la experiencia de usuario.",
+        "cloudappi-1": "<strong>Frontend Web:</strong> Desarrollo con React y AngularJS, implementación de interfaces responsivas y optimización de rendimiento.",
+        "cloudappi-2": "<strong>Backend:</strong> Integración con APIs desarrolladas en NestJS, manejo de estados complejos y autenticación.",
+        "cloudappi-3": "<strong>Aplicación Móvil:</strong> Desarrollo de app híbrida con Ionic y Angular para búsqueda de establecimientos y agendamiento de turnos.",
+        "cloudappi-4": "<strong>UX/UI:</strong> Mejora continua de la experiencia de usuario basada en feedback y métricas de uso.",
+        "loro-title": "Loro (E-commerce Colombia) - Desarrollador Frontend",
+        "loro-period": "Agosto 2021 – Diciembre 2021",
+        "loro-desc": "Colaboré en la mejora de funcionalidades existentes y la optimización de la experiencia mobile-first en una plataforma e-commerce ya en funcionamiento.",
+        "loro-1": "<strong>Optimización Mobile:</strong> Implementación de diseño responsive y mejora de performance en dispositivos móviles.",
+        "loro-2": "<strong>Funcionalidades E-commerce:</strong> Desarrollo de features para carrito de compras, checkout y gestión de productos.",
+        "loro-3": "<strong>Performance:</strong> Optimización de tiempos de carga y experiencia de usuario en plataforma de alto tráfico.",
+        "loro-4": "<strong>Colaboración:</strong> Trabajo en equipo ágil con metodologías Scrum y revisiones de código.",
+        "freelance-title": "Freelance - Desarrollador Full Stack",
+        "freelance-period": "Junio 2018 – Actualidad",
+        "freelance-desc": "Desarrollo web y móvil a medida para diversos clientes, abarcando desde sitios corporativos hasta soluciones con dashboards y lógica de negocio compleja.",
+        "freelance-1": "<strong>Desarrollo Full Stack:</strong> Creación de aplicaciones completas desde el frontend hasta la base de datos.",
+        "freelance-2": "<strong>Sitios Corporativos:</strong> Desarrollo de páginas web profesionales con Next.js y optimización SEO.",
+        "freelance-3": "<strong>Dashboards Complejos:</strong> Implementación de paneles de control con visualización de datos y reportes.",
+        "freelance-4": "<strong>Adaptabilidad:</strong> Trabajo con diferentes tecnologías según necesidades del cliente y equipo.",
+        "freelance-5": "<strong>Gestión de Proyectos:</strong> Manejo directo con clientes, estimación de tiempos y entrega de proyectos.",
+        "featured-projects": "Proyectos Destacados",
+        "educonnect-title": "EduConnect Mobile - Aplicación Educativa",
+        "app-store": "Ver en App Store",
+        "google-play": "Ver en Google Play",
+        "educonnect-1": "<strong>Aplicación Nativa:</strong> Desarrollo completo de aplicación móvil para institución educativa con más de 2,000 usuarios activos.",
+        "educonnect-2": "<strong>Funcionalidades Core:</strong> Sistema de calificaciones en tiempo real, comunicación padres-docentes, calendario académico y notificaciones push.",
+        "educonnect-3": "<strong>Arquitectura:</strong> Implementación con React Native, Redux Toolkit para gestión de estado y React Query para sincronización de datos.",
+        "educonnect-4": "<strong>Offline-First:</strong> Funcionalidad completa sin conexión con sincronización automática al recuperar conectividad.",
+        "educonnect-5": "<strong>Publicación:</strong> Gestión completa del proceso de publicación en App Store y Google Play Store, incluyendo certificados y optimización ASO.",
+        "eduadmin-title": "EduAdmin Dashboard - Panel de Administración Educativa",
+        "view-demo": "Ver demo",
+        "eduadmin-1": "<strong>Sistema Integral:</strong> Dashboard web completo para gestión administrativa del colegio con módulos de estudiantes, docentes, calificaciones y reportes.",
+        "eduadmin-2": "<strong>Analytics Avanzados:</strong> Implementación de gráficos interactivos con Chart.js para análisis de rendimiento académico y métricas institucionales.",
+        "eduadmin-3": "<strong>Gestión de Usuarios:</strong> Sistema de roles y permisos granulares para directivos, coordinadores, docentes y personal administrativo.",
+        "eduadmin-4": "<strong>Reportes Automatizados:</strong> Generación de reportes en PDF con datos académicos, asistencia y comunicados para padres de familia.",
+        "eduadmin-5": "<strong>Integración:</strong> Sincronización bidireccional con la aplicación móvil mediante APIs REST desarrolladas en NestJS.",
+        "clientai-title": "Client Reminder AI - Sistema de Gestión Inteligente",
+        "view-github": "Ver en GitHub",
+        "clientai-1": "<strong>IA Predictiva:</strong> Implementación de algoritmos de machine learning para predicción de asistencia de clientes con 85% de precisión.",
+        "clientai-2": "<strong>Automatización:</strong> Sistema de recordatorios automáticos vía WhatsApp Business API con personalización basada en comportamiento del cliente.",
+        "clientai-3": "<strong>Dashboard Analytics:</strong> Panel de control con métricas en tiempo real, análisis de tendencias y reportes de efectividad.",
+        "clientai-4": "<strong>Integración:</strong> Conexión con calendarios externos (Google Calendar, Outlook) y sistemas de CRM existentes.",
+        "education": "Educación",
+        "education-desc": "Autodidacta - Cursos avanzados en Clean Architecture, AI, React Native, Backend escalable",
+        "generating-pdf": "Generando PDF..."
+      },
+      en: {
+        "name": "Magdiel Gómez",
+        "description": "Fullstack Developer focused on mobile apps, edtech, and artificial intelligence.",
+        "location": "Guaymas, Sonora, Mexico",
+        "skills": "Skills",
+        "mobile-native": "Native Mobile",
+        "languages": "Languages",
+        "spanish": "Spanish (native)",
+        "english": "English (technical reading)",
+        "summary": "Senior developer with over 7 years creating high-impact web and mobile solutions, with experience in clean architecture, offline-first apps, AI microservices, and digital product development.",
+        "work-experience": "Work Experience",
+        "cloudappi-title": "CloudAppi - Frontend Developer",
+        "cloudappi-period": "March 2022 – June 2023",
+        "cloudappi-desc": "Participated in the development and improvement of an appointment management system, implementing new features and optimizing user experience.",
+        "cloudappi-1": "<strong>Web Frontend:</strong> Development with React and AngularJS, implementation of responsive interfaces and performance optimization.",
+        "cloudappi-2": "<strong>Backend:</strong> Integration with APIs developed in NestJS, complex state management and authentication.",
+        "cloudappi-3": "<strong>Mobile Application:</strong> Development of hybrid app with Ionic and Angular for establishment search and appointment scheduling.",
+        "cloudappi-4": "<strong>UX/UI:</strong> Continuous improvement of user experience based on feedback and usage metrics.",
+        "loro-title": "Loro (E-commerce Colombia) - Frontend Developer",
+        "loro-period": "August 2021 – December 2021",
+        "loro-desc": "Collaborated on improving existing functionalities and optimizing mobile-first experience on a running e-commerce platform.",
+        "loro-1": "<strong>Mobile Optimization:</strong> Implementation of responsive design and performance improvement on mobile devices.",
+        "loro-2": "<strong>E-commerce Features:</strong> Development of features for shopping cart, checkout, and product management.",
+        "loro-3": "<strong>Performance:</strong> Optimization of loading times and user experience on high-traffic platform.",
+        "loro-4": "<strong>Collaboration:</strong> Agile teamwork with Scrum methodologies and code reviews.",
+        "freelance-title": "Freelance - Full Stack Developer",
+        "freelance-period": "June 2018 – Present",
+        "freelance-desc": "Custom web and mobile development for various clients, ranging from corporate sites to solutions with dashboards and complex business logic.",
+        "freelance-1": "<strong>Full Stack Development:</strong> Creation of complete applications from frontend to database.",
+        "freelance-2": "<strong>Corporate Sites:</strong> Development of professional websites with Next.js and SEO optimization.",
+        "freelance-3": "<strong>Complex Dashboards:</strong> Implementation of control panels with data visualization and reports.",
+        "freelance-4": "<strong>Adaptability:</strong> Working with different technologies according to client and team needs.",
+        "freelance-5": "<strong>Project Management:</strong> Direct client management, time estimation, and project delivery.",
+        "featured-projects": "Featured Projects",
+        "educonnect-title": "EduConnect Mobile - Educational Application",
+        "app-store": "View on App Store",
+        "google-play": "View on Google Play",
+        "educonnect-1": "<strong>Native Application:</strong> Complete development of mobile application for educational institution with over 2,000 active users.",
+        "educonnect-2": "<strong>Core Features:</strong> Real-time grading system, parent-teacher communication, academic calendar, and push notifications.",
+        "educonnect-3": "<strong>Architecture:</strong> Implementation with React Native, Redux Toolkit for state management, and React Query for data synchronization.",
+        "educonnect-4": "<strong>Offline-First:</strong> Complete functionality without connection with automatic synchronization when connectivity is restored.",
+        "educonnect-5": "<strong>Publishing:</strong> Complete management of publishing process on App Store and Google Play Store, including certificates and ASO optimization.",
+        "eduadmin-title": "EduAdmin Dashboard - Educational Administration Panel",
+        "view-demo": "View demo",
+        "eduadmin-1": "<strong>Integral System:</strong> Complete web dashboard for school administrative management with modules for students, teachers, grades, and reports.",
+        "eduadmin-2": "<strong>Advanced Analytics:</strong> Implementation of interactive charts with Chart.js for academic performance analysis and institutional metrics.",
+        "eduadmin-3": "<strong>User Management:</strong> Granular roles and permissions system for directors, coordinators, teachers, and administrative staff.",
+        "eduadmin-4": "<strong>Automated Reports:</strong> PDF report generation with academic data, attendance, and communications for parents.",
+        "eduadmin-5": "<strong>Integration:</strong> Bidirectional synchronization with mobile application through REST APIs developed in NestJS.",
+        "clientai-title": "Client Reminder AI - Intelligent Management System",
+        "view-github": "View on GitHub",
+        "clientai-1": "<strong>Predictive AI:</strong> Implementation of machine learning algorithms for client attendance prediction with 85% accuracy.",
+        "clientai-2": "<strong>Automation:</strong> Automatic reminder system via WhatsApp Business API with personalization based on client behavior.",
+        "clientai-3": "<strong>Analytics Dashboard:</strong> Control panel with real-time metrics, trend analysis, and effectiveness reports.",
+        "clientai-4": "<strong>Integration:</strong> Connection with external calendars (Google Calendar, Outlook) and existing CRM systems.",
+        "education": "Education",
+        "education-desc": "Self-taught - Advanced courses in Clean Architecture, AI, React Native, Scalable Backend",
+        "generating-pdf": "Generating PDF..."
+      }
+    };
+
+    let currentLang = 'es';
+
+    // Función para generar PDF
+    async function generatePDF() {
+      const loadingOverlay = document.getElementById('pdfLoading');
+      const cvContent = document.getElementById('cv-content');
+      
+      try {
+        // Mostrar loading
+        loadingOverlay.classList.add('show');
+        
+        // Configuración del PDF
+        const opt = {
+          margin: [0.5, 0.5, 0.5, 0.5],
+          filename: `CV_Magdiel_Gomez_${currentLang.toUpperCase()}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { 
+            scale: 2,
+            useCORS: true,
+            letterRendering: true,
+            allowTaint: false
+          },
+          jsPDF: { 
+            unit: 'in', 
+            format: 'a4', 
+            orientation: 'portrait' 
+          }
+        };
+
+        // Generar PDF
+        await html2pdf().set(opt).from(cvContent).save();
+        
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert(currentLang === 'es' ? 'Error al generar el PDF' : 'Error generating PDF');
+      } finally {
+        // Ocultar loading
+        loadingOverlay.classList.remove('show');
+      }
+    }
+
+    // Función para cambiar el idioma
+    function toggleLanguage() {
+      currentLang = currentLang === 'es' ? 'en' : 'es';
+      updateLanguage();
+      localStorage.setItem('language', currentLang);
+    }
+
+    // Función para actualizar el contenido del idioma
+    function updateLanguage() {
+      const langText = document.getElementById('langText');
+      const html = document.documentElement;
+      
+      // Actualizar el botón de idioma
+      langText.textContent = currentLang === 'es' ? 'EN' : 'ES';
+      
+      // Actualizar el atributo lang del HTML
+      html.setAttribute('lang', currentLang);
+      
+      // Actualizar el título de la página
+      document.title = currentLang === 'es' ? 'CV - Magdiel Gómez' : 'Resume - Magdiel Gómez';
+      
+      // Actualizar todos los elementos con data-i18n
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+          element.innerHTML = translations[currentLang][key];
+        }
+      });
+    }
+
+    // Función para cargar el idioma guardado
+    function loadLanguage() {
+      const savedLang = localStorage.getItem('language');
+      const browserLang = navigator.language.startsWith('en') ? 'en' : 'es';
+      
+      currentLang = savedLang || browserLang;
+      updateLanguage();
+    }
+
+    // Función para cambiar el tema
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeIcon = document.getElementById('themeIcon');
+      const currentTheme = html.getAttribute('data-theme');
+      
+      if (currentTheme === 'dark') {
+        html.removeAttribute('data-theme');
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Función para cargar el tema guardado
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const html = document.documentElement;
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        html.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-moon';
+      } else {
+        html.removeAttribute('data-theme');
+        themeIcon.className = 'fas fa-sun';
+      }
+    }
+
+    // Cargar configuraciones al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTheme();
+      loadLanguage();
+    });
+
+    // Agregar event listeners
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+    document.getElementById('pdfButton').addEventListener('click', generatePDF);
+
+    // Escuchar cambios en la preferencia del sistema
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        loadTheme();
+      }
+    });
+  </script>
+</body>
+</html>
