@@ -823,10 +823,10 @@
         <p><strong data-i18n="eduadmin-title">EduAdmin Dashboard - Panel de Administración Educativa</strong> – <a href="#" data-i18n="view-demo">Ver demo</a></p>
         <ul>
           <li data-i18n="eduadmin-1"><strong>Sistema Integral:</strong> Dashboard web completo para gestión administrativa del colegio con módulos de estudiantes, docentes, calificaciones y reportes.</li >
-          <li data-i18n="eduadmin-2"><strong>Analytics Avanzados:</strong> Implementación de gráficos interactivos con Chart.js para análisis de rendimiento académico y métricas institucionales.</li >
-          <li data-i18n="eduadmin-3"><strong>Gestión de Usuarios:</strong> Sistema de roles y permisos granulares para directivos, coordinadores, docentes y personal administrativo.</li >
-          <li data-i18n="eduadmin-4"><strong>Reportes Automatizados:</strong> Generación de reportes en PDF con datos académicos, asistencia y comunicados para padres de familia.</li >
-          <li data-i18n="eduadmin-5"><strong>Integración:</strong> Sincronización bidireccional con la aplicación móvil mediante APIs REST desarrolladas en NestJS.</li >
+        <li data-i18n="eduadmin-2"><strong>Analytics Avanzados:</strong> Implementación de gráficos interactivos con Chart.js para análisis de rendimiento académico y métricas institucionales.</li >
+        <li data-i18n="eduadmin-3"><strong>Gestión de Usuarios:</strong> Sistema de roles y permisos granulares para directivos, coordinadores, docentes y personal administrativo.</li >
+        <li data-i18n="eduadmin-4"><strong>Reportes Automatizados:</strong> Generación de reportes en PDF con datos académicos, asistencia y comunicados para padres de familia.</li >
+        <li data-i18n="eduadmin-5"><strong>Integración:</strong> Sincronización bidireccional con la aplicación móvil mediante APIs REST desarrolladas en NestJS.</li >
         </ul>
         <div class="tech-stack">
           <div class="tag">React</div><div class="tag">Next.js</div><div class="tag">Chart.js</div><div class="tag">NestJS</div><div class="tag">PostgreSQL</div><div class="tag">JWT Auth</div>
@@ -872,7 +872,7 @@
         "cloudappi-2": "<strong>Backend:</strong> Integración con APIs desarrolladas en NestJS, manejo de estados complejos y autenticación.",
         "cloudappi-3": "<strong>Aplicación Móvil:</strong> Desarrollo de app híbrida con Ionic y Angular para búsqueda de establecimientos y agendamiento de turnos.",
         "cloudappi-4": "<strong>UX/UI:</strong> Mejora continua de la experiencia de usuario basada en feedback y métricas de uso.",
-        "loro-title": "Loro (E-commerce Colombia) - Desarrollador Frontend",
+        "loro-title": "Loro (E-commerce Colombia) - Frontend Developer",
         "loro-period": "Agosto 2021 – Diciembre 2021",
         "loro-desc": "Colaboré en la mejora de funcionalidades existentes y la optimización de la experiencia mobile-first en una plataforma e-commerce ya en funcionamiento.",
         "loro-1": "<strong>Optimización Mobile:</strong> Implementación de diseño responsive y mejora de performance en dispositivos móviles.",
@@ -969,7 +969,7 @@
         "educonnect-5": "<strong>Publishing:</strong> Complete management of publishing process on App Store and Google Play Store, including certificates and ASO optimization.",
         "eduadmin-title": "EduAdmin Dashboard - Educational Administration Panel",
         "view-demo": "View demo",
-        "eduadmin-1": "<strong>Integral System:</strong> Complete web dashboard for school administrative management with modules for students, teachers, grades, and reports.",
+        "eduadmin-1": "<strong>Integral System:</strong> Dashboard web completo para gestión administrativa del colegio con módulos de estudiantes, docentes, calificaciones y reportes.",
         "eduadmin-2": "<strong>Advanced Analytics:</strong> Implementation of interactive charts with Chart.js for academic performance analysis and institutional metrics.",
         "eduadmin-3": "<strong>User Management:</strong> Granular roles and permissions system for directors, coordinators, teachers, and administrative staff.",
         "eduadmin-4": "<strong>Automated Reports:</strong> PDF report generation with academic data, attendance, and communications for parents.",
@@ -1162,66 +1162,15 @@
         };
         loadingQuality.textContent = `${currentLang === 'es' ? 'Calidad:' : 'Quality:'} ${qualityNames[selectedQuality]}`;
         
-        // Crear un clon del contenido
-        const clonedContent = cvContent.cloneNode(true);
+        // Pequeño delay para asegurar que el loading se muestre
+        await new Promise(resolve => setTimeout(resolve, 100));
         
-        // Aplicar estilos base
-        clonedContent.style.width = '210mm';
-        clonedContent.style.minHeight = '297mm';
-        clonedContent.style.padding = '8mm';
-        clonedContent.style.boxSizing = 'border-box';
-        clonedContent.style.backgroundColor = 'white';
-        clonedContent.style.color = 'black';
-        clonedContent.style.fontSize = '11px';
-        clonedContent.style.lineHeight = '1.3';
-        clonedContent.style.display = 'flex';
-        clonedContent.style.flexDirection = 'row';
-        
-        // Configurar sidebar y main
-        const aside = clonedContent.querySelector('aside');
-        const main = clonedContent.querySelector('main');
-        
-        if (aside && main) {
-          aside.style.width = '30%';
-          aside.style.backgroundColor = '#1e293b';
-          aside.style.color = 'white';
-          aside.style.padding = '12px';
-          aside.style.boxSizing = 'border-box';
-          
-          main.style.width = '70%';
-          main.style.padding = '12px';
-          main.style.boxSizing = 'border-box';
-        }
-        
-        // Optimizar para múltiples páginas
-        const estimatedPages = optimizeForMultiplePages(clonedContent);
-        
-        // Optimizar según calidad seleccionada
-        const qualityConfig = optimizeContentForQuality(clonedContent, selectedQuality);
-        
-        // Aplicar estilos de prevención de cortes
-        const jobs = clonedContent.querySelectorAll('.job');
-        const projects = clonedContent.querySelectorAll('.project');
-        
-        jobs.forEach(job => {
-          job.style.pageBreakInside = 'avoid';
-          job.style.breakInside = 'avoid';
-        });
-        
-        projects.forEach(project => {
-          project.style.pageBreakInside = 'avoid';
-          project.style.breakInside = 'avoid';
-        });
-        
-        // Insertar temporalmente el clon en el DOM
-        clonedContent.style.position = 'absolute';
-        clonedContent.style.left = '-9999px';
-        clonedContent.style.top = '0';
-        document.body.appendChild(clonedContent);
+        // Obtener configuración de calidad
+        const qualityConfig = qualitySettings[selectedQuality];
         
         // Configuración optimizada del PDF según calidad
         const opt = {
-          margin: [3, 3, 3, 3],
+          margin: 0.5,
           filename: `CV_Magdiel_Gomez_${currentLang.toUpperCase()}_${selectedQuality}.pdf`,
           image: { 
             type: 'jpeg', 
@@ -1230,49 +1179,279 @@
           html2canvas: { 
             scale: qualityConfig.scale,
             useCORS: true,
-            letterRendering: true,
             allowTaint: false,
-            width: 794,
-            height: null,
+            letterRendering: true,
             scrollX: 0,
             scrollY: 0,
-            windowWidth: 794,
-            windowHeight: 1123,
-            imageTimeout: 15000,
-            removeContainer: true
+            windowWidth: 1200,
+            windowHeight: 1600,
+            width: 1200,
+            height: null,
+            backgroundColor: '#ffffff',
+            removeContainer: true,
+            imageTimeout: 0,
+            logging: false,
+            onclone: function(clonedDoc) {
+              // Aplicar estilos específicos para PDF en el documento clonado
+              const clonedContent = clonedDoc.getElementById('cv-content');
+              if (clonedContent) {
+                // Forzar estilos para PDF
+                clonedContent.style.cssText = `
+                  width: 210mm !important;
+                  max-width: 210mm !important;
+                  min-height: 297mm !important;
+                  padding: 15mm !important;
+                  margin: 0 !important;
+                  box-sizing: border-box !important;
+                  background: white !important;
+                  color: black !important;
+                  font-family: 'Segoe UI', Arial, sans-serif !important;
+                  font-size: ${selectedQuality === 'compressed' ? '10px' : '11px'} !important;
+                  line-height: 1.4 !important;
+                  display: flex !important;
+                  flex-direction: row !important;
+                  box-shadow: none !important;
+                `;
+                
+                const aside = clonedContent.querySelector('aside');
+                const main = clonedContent.querySelector('main');
+                
+                if (aside) {
+                  aside.style.cssText = `
+                    width: 30% !important;
+                    background: #1e293b !important;
+                    color: white !important;
+                    padding: 15px !important;
+                    margin: 0 !important;
+                    box-sizing: border-box !important;
+                    font-size: ${selectedQuality === 'compressed' ? '9px' : '10px'} !important;
+                  `;
+                  
+                  // Asegurar que los iconos y texto sean visibles
+                  const icons = aside.querySelectorAll('i');
+                  icons.forEach(icon => {
+                    icon.style.color = '#38bdf8 !important';
+                    icon.style.marginRight = '8px !important';
+                  });
+                  
+                  const tags = aside.querySelectorAll('.tag');
+                  tags.forEach(tag => {
+                    tag.style.cssText = `
+                      display: inline-block !important;
+                      background: #475569 !important;
+                      color: #e2e8f0 !important;
+                      border-radius: 4px !important;
+                      padding: ${selectedQuality === 'compressed' ? '1px 4px' : '2px 6px'} !important;
+                      margin: 2px !important;
+                      font-size: ${selectedQuality === 'compressed' ? '7px' : '8px'} !important;
+                    `;
+                  });
+                }
+                
+                if (main) {
+                  main.style.cssText = `
+                    width: 70% !important;
+                    padding: 15px !important;
+                    margin: 0 !important;
+                    box-sizing: border-box !important;
+                    color: black !important;
+                    font-size: ${selectedQuality === 'compressed' ? '10px' : '11px'} !important;
+                  `;
+                  
+                  // Estilos para títulos
+                  const h1 = main.querySelector('h1');
+                  if (h1) {
+                    h1.style.cssText = `
+                      font-size: ${selectedQuality === 'compressed' ? '18px' : '22px'} !important;
+                      color: #1e293b !important;
+                      margin: 0 0 10px 0 !important;
+                      font-weight: bold !important;
+                    `;
+                  }
+                  
+                  const h3s = main.querySelectorAll('h3');
+                  h3s.forEach(h3 => {
+                    h3.style.cssText = `
+                      font-size: ${selectedQuality === 'compressed' ? '13px' : '15px'} !important;
+                      color: #1e293b !important;
+                      border-bottom: 2px solid #e2e8f0 !important;
+                      padding-bottom: 4px !important;
+                      margin: 15px 0 8px 0 !important;
+                      font-weight: bold !important;
+                    `;
+                  });
+                  
+                  const h4s = main.querySelectorAll('h4');
+                  h4s.forEach(h4 => {
+                    h4.style.cssText = `
+                      font-size: ${selectedQuality === 'compressed' ? '11px' : '13px'} !important;
+                      color: #1e40af !important;
+                      margin: 0 0 4px 0 !important;
+                      font-weight: bold !important;
+                    `;
+                  });
+                  
+                  // Estilos para trabajos y proyectos
+                  const jobs = main.querySelectorAll('.job');
+                  jobs.forEach(job => {
+                    job.style.cssText = `
+                      margin-bottom: ${selectedQuality === 'compressed' ? '8px' : '12px'} !important;
+                      page-break-inside: avoid !important;
+                    `;
+                    
+                    const jobSpan = job.querySelector('span');
+                    if (jobSpan) {
+                      jobSpan.style.cssText = `
+                        font-size: ${selectedQuality === 'compressed' ? '9px' : '10px'} !important;
+                        color: #475569 !important;
+                        margin-bottom: 4px !important;
+                        display: block !important;
+                      `;
+                    }
+                    
+                    const jobP = job.querySelector('p');
+                    if (jobP) {
+                      jobP.style.cssText = `
+                        font-size: ${selectedQuality === 'compressed' ? '9px' : '10px'} !important;
+                        color: #475569 !important;
+                        font-style: italic !important;
+                        margin: 4px 0 !important;
+                        line-height: 1.3 !important;
+                      `;
+                    }
+                    
+                    const ul = job.querySelector('ul');
+                    if (ul) {
+                      ul.style.cssText = `
+                        margin: 4px 0 !important;
+                        padding-left: 15px !important;
+                      `;
+                      
+                      const lis = ul.querySelectorAll('li');
+                      lis.forEach(li => {
+                        li.style.cssText = `
+                          margin-bottom: 2px !important;
+                          font-size: ${selectedQuality === 'compressed' ? '9px' : '10px'} !important;
+                          line-height: 1.3 !important;
+                          color: black !important;
+                        `;
+                      });
+                    }
+                  });
+                  
+                  // Estilos para proyectos
+                  const projects = main.querySelectorAll('.project');
+                  projects.forEach(project => {
+                    project.style.cssText = `
+                      margin-bottom: ${selectedQuality === 'compressed' ? '8px' : '12px'} !important;
+                      page-break-inside: avoid !important;
+                    `;
+                  });
+                  
+                  // Estilos para tech stack
+                  const techStacks = main.querySelectorAll('.tech-stack');
+                  techStacks.forEach(techStack => {
+                    techStack.style.cssText = `
+                      margin-top: 6px !important;
+                      padding-top: 4px !important;
+                      border-top: 1px solid #e2e8f0 !important;
+                    `;
+                    
+                    const tags = techStack.querySelectorAll('.tag');
+                    tags.forEach(tag => {
+                      tag.style.cssText = `
+                        display: inline-block !important;
+                        background: #e2e8f0 !important;
+                        color: #1e293b !important;
+                        border-radius: 3px !important;
+                        padding: ${selectedQuality === 'compressed' ? '1px 3px' : '2px 4px'} !important;
+                        margin: 1px !important;
+                        font-size: ${selectedQuality === 'compressed' ? '7px' : '8px'} !important;
+                      `;
+                    });
+                  });
+                  
+                  // Estilos para enlaces
+                  const links = main.querySelectorAll('a');
+                  links.forEach(link => {
+                    link.style.cssText = `
+                      color: #1e40af !important;
+                      text-decoration: none !important;
+                    `;
+                  });
+                }
+                
+                // Ocultar controles
+                const controls = clonedDoc.querySelector('.controls');
+                if (controls) {
+                  controls.style.display = 'none !important';
+                }
+                
+                // Ocultar modales
+                const modals = clonedDoc.querySelectorAll('.pdf-modal, .pdf-loading');
+                modals.forEach(modal => {
+                  modal.style.display = 'none !important';
+                });
+              }
+            }
           },
           jsPDF: { 
             unit: 'mm', 
             format: 'a4', 
             orientation: 'portrait',
             compress: qualityConfig.compress,
-            precision: qualityConfig.precision,
-            userUnit: 1.0
+            precision: qualityConfig.precision
           },
           pagebreak: { 
-            mode: ['avoid-all', 'css'],
-            before: ['.page-break-before', '.force-page-break'],
+            mode: ['avoid-all', 'css', 'legacy'],
+            before: ['.page-break-before'],
             after: ['.page-break-after'],
-            avoid: ['.job', '.project', '.avoid-page-break', '.section']
+            avoid: ['.job', '.project', '.avoid-page-break']
           }
         };
 
-        // Generar PDF
-        await html2pdf().set(opt).from(clonedContent).save();
+        // Generar PDF directamente del elemento visible
+        console.log('Iniciando generación de PDF...');
+        await html2pdf().set(opt).from(cvContent).save();
         
-        // Remover el clon del DOM
-        document.body.removeChild(clonedContent);
-        
-        console.log(`PDF generado exitosamente. Páginas estimadas: ${estimatedPages}, Calidad: ${selectedQuality}`);
+        console.log(`PDF generado exitosamente con calidad: ${selectedQuality}`);
         
       } catch (error) {
         console.error('Error generating PDF:', error);
-        alert(currentLang === 'es' ? 'Error al generar el PDF' : 'Error generating PDF');
+        alert(currentLang === 'es' ? 'Error al generar el PDF. Por favor, inténtalo de nuevo.' : 'Error generating PDF. Please try again.');
       } finally {
         // Ocultar loading y modal
         loadingOverlay.classList.remove('show');
         hidePdfModal();
       }
+    }
+
+    // Función para asegurar que las fuentes estén cargadas
+    function ensureFontsLoaded() {
+      return new Promise((resolve) => {
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(resolve);
+        } else {
+          setTimeout(resolve, 100);
+        }
+      });
+    }
+
+    // Función para preparar el contenido para PDF
+    async function prepareContentForPDF() {
+      await ensureFontsLoaded();
+      
+      // Asegurar que todas las imágenes estén cargadas
+      const images = document.querySelectorAll('img');
+      const imagePromises = Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      });
+      
+      await Promise.all(imagePromises);
     }
 
     // Función para cambiar el idioma
@@ -1343,7 +1522,7 @@
     }
 
     // Cargar configuraciones al cargar la página
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       loadTheme();
       loadLanguage();
       handleQualitySelection();
